@@ -706,9 +706,6 @@ async function loadLeaderboard() {
     setInterval(launchConfetti, 12000);
   }
      
-// Auto-refresh mod dashboard every 5s
-setInterval(() => { if (isMod) refreshModDashboard(); }, 5000);
-
 // ══════════════════════════════════════════════════
 //  UTILS
 // ══════════════════════════════════════════════════
@@ -810,6 +807,165 @@ function showToast(msg, type="info") {
 }
 
 // launchConfetti already defined above
+
+// ══════════════════════════════════════════════════
+//  MODERATOR FUNCTIONS
+// ══════════════════════════════════════════════════
+let modTimerInt  = null;
+let modTimerSec  = 0;
+let currentRound = -1;
+
+async function modStartRound() {
+  const sel = document.getElementById("mod-round-select").value;
+  const dur = parseInt(document.getElementById("mod-timer-input").value) || 90;
+
+  if (sel === "-1") {
+    await set(gameRef, { phase:"waiting", moderatorId:myId });
+    showToast("Sent players to waiting room", "info"); return;
+  }
+  if (sel === "inst") {
+    await update(gameRef, { phase:"instructions" });
+    showToast("Instructions shown to players", "info"); return;
+  }
+  if (sel === "lb") { modShowLeaderboard(); return; }
+
+  const ri  = parseInt(sel);
+  currentRound = ri;
+  const now = Date.now();
+
+  await update(gameRef, {
+    phase:"game", currentRound:ri,
+    roundDuration:dur, roundStartedAt:now, roundActive:true, reveal:null
+  });
+
+  document.getElementById("mod-stat-subs").textContent = "0";
+  startModTimer(dur);
+
+  onValue(ref(db,"submissions"), snap => {
+    if(!snap.exists()) return;
+    let count = 0;
+    Object.values(snap.val()).forEach(ps => { if(ps[ri]) count++; });
+    const el = document.getElementById("mod-stat-subs");
+    if(el) el.textContent = count;
+  });
+
+  showToast("▶ Round "+(ri+1)+" started — "+dur+"s", "success");
+}
+
+function startModTimer(sec) {
+  if(modTimerInt) clearInterval(modTimerInt);
+  modTimerSec = sec;
+  updateModTimerEl();
+  modTimerInt = setInterval(async () => {
+    modTimerSec--;
+    updateModTimerEl();
+    if(modTimerSec <= 0) {
+      clearInterval(modTimerInt); modTimerInt = null;
+      await update(gameRef, { roundActive:false });
+      showToast("⏰ Timer ended", "info");
+    }
+  }, 1000);
+}
+
+function updateModTimerEl() {
+  const el = document.getElementById("mod-timer-display");
+  if(!el) return;
+  const m = Math.floor(modTimerSec/60), s = modTimerSec%60;
+  el.textContent = m+":"+String(s).padStart(2,"0");
+  el.style.color = modTimerSec <= 10 ? "var(--red)" : "var(--green)";
+}
+
+async function modEndRound() {
+  if(modTimerInt) { clearInterval(modTimerInt); modTimerInt = null; }
+  await update(gameRef, { roundActive:false });
+  showToast("■ Round ended early", "info");
+}
+
+async function modRevealAnswer() {
+  if(currentRound < 0 || currentRound >= ROUNDS.length) {
+    showToast("⚠ No active round selected", "error"); return;
+  }
+  const r = ROUNDS[currentRound];
+  await update(gameRef, {
+    phase:"reveal",
+    reveal:{ digitLabel:r.digitLabel, solution:r.solution }
+  });
+  showToast("👁 Answer revealed to all players", "success");
+}
+
+async function modNextRound() {
+  const next = currentRound + 1;
+  if(next >= ROUNDS.length) { modShowLeaderboard(); return; }
+  document.getElementById("mod-round-select").value = String(next);
+  document.getElementById("mod-timer-input").value  = String(ROUNDS[next].timer);
+  modStartRound();
+}
+
+async function modShowLeaderboard() {
+  await update(gameRef, { phase:"leaderboard" });
+  showToast("📊 Leaderboard displayed", "info");
+}
+
+async function modResetGame() {
+  if(!confirm("Reset entire game? All scores and data will be wiped.")) return;
+  if(modTimerInt) { clearInterval(modTimerInt); modTimerInt = null; }
+  await set(gameRef,    { phase:"waiting", moderatorId:myId });
+  await set(playersRef, null);
+  await set(subsRef,    null);
+  document.getElementById("mod-timer-display").textContent = "—";
+  currentRound = -1;
+  showToast("↺ Game fully reset", "error");
+  refreshModDashboard();
+}
+
+async function refreshModDashboard() {
+  const snap = await get(playersRef);
+  const players = snap.exists() ? Object.values(snap.val()) : [];
+  refreshModPlayers(players);
+  const gs = (await get(gameRef)).val();
+  if(gs) {
+    const stEl = document.getElementById("mod-stat-state");
+    if(stEl) stEl.textContent = (gs.phase||"IDLE").toUpperCase();
+    const rEl = document.getElementById("mod-stat-round");
+    if(rEl) rEl.textContent = gs.currentRound >= 0
+      ? (gs.currentRound+1)+"/"+ROUNDS.length : "—";
+  }
+}
+
+function refreshModPlayers(players) {
+  const online = players.filter(p => p.online && !p.isMod);
+  const sorted = [...players].filter(p => !p.isMod).sort((a,b) => (b.score||0)-(a.score||0));
+
+  const el = document.getElementById("mod-stat-online");
+  if(el) el.textContent = online.length;
+
+  const pList = document.getElementById("mod-player-list");
+  if(pList) {
+    pList.innerHTML = online.length === 0
+      ? '<div style="font-size:12px;color:var(--g-dim);">No players connected yet</div>'
+      : online.map(p=>`
+          <div class="player-item">
+            <span class="player-dot online"></span>
+            <span class="player-name-sm">${p.name}</span>
+            <span class="player-score-sm">${p.score||0}</span>
+          </div>`).join("");
+  }
+
+  const sPrev = document.getElementById("mod-score-preview");
+  if(sPrev) {
+    sPrev.innerHTML = sorted.length === 0
+      ? '<div style="font-size:12px;color:var(--g-dim);">No scores yet</div>'
+      : sorted.slice(0,10).map((p,i)=>`
+          <div class="player-item">
+            <span style="font-family:var(--f-display);font-size:11px;color:var(--g-dim);width:24px;">#${i+1}</span>
+            <span class="player-name-sm">${p.name}</span>
+            <span class="player-score-sm">${p.score||0}</span>
+          </div>`).join("");
+  }
+}
+
+// Auto-refresh mod dashboard every 5s
+setInterval(() => { if(isMod) refreshModDashboard(); }, 5000);
 
 // Expose to global for onclick handlers
 window.handleLogin       = handleLogin;
@@ -1892,4 +2048,3 @@ body::before{
 
 </body>
 </html>
-
