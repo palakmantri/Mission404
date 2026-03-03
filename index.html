@@ -43,13 +43,13 @@ const ROUNDS = [
     name: "Mirror Cipher",
     tag: "CRYPTOGRAPHY",
     timer: 90,
-    desc: "A message was intercepted from the insider's terminal. Every word has been reversed. Decode it to find your digit.",
+    desc: "A message was intercepted from the insider's terminal. Decode it to find your digit.",
     render: "mirror",
-    cipherText: "DNIF EHT ELOR TROPER NEVES",
-    hint: "Reverse each word individually: DNIF → FIND, EHT → THE, etc.",
-    answer: "7",
-    digitLabel: "DIGIT 1 = 7",
-    solution: 'Reversed: "FIND THE MOLE REPORT SEVEN" — the number word is SEVEN → 7'
+    cipherText: "TARGET THE MOLE BEFORE THEY ACCESS THE VAULT. FIVE FILES CONFIRM THE BREACH WAS REAL. EHT TIGID SEDIH NI EHT DROW-T .TNUOC",
+    hint: "Reverse each word individually and enter Digit",
+    answer: "8",
+    digitLabel: "DIGIT 1 = 8",
+    solution: "Decoded: 'TARGET THE MOLE BEFORE THEY ACCESS THE VAULT. FIVE FILES CONFIRM THE BREACH WAS REAL. THE DIGIT HIDES IN THE T-WORD COUNT.' — Count T-words: TARGET, THE, THEY, THE, THE, THE, THE, T = 8. The word EIGHT also confirms it. Answer: 8"
   },
   {
     id: 1,
@@ -58,37 +58,46 @@ const ROUNDS = [
     timer: 90,
     desc: "Our system captured a distorted transmission. Decode the l33tspeak and cross-reference the access log. Extract only digits from the matching entry.",
     render: "captcha",
-    captchaText: "Th3 1ns1d3r us3d th3 c0nf3r3nc3 r00m",
+    captchaText: "Th3 1ns1d3r us3d th3 c0nf3r3nc3 r00m, Th3 f1l3s w3r3 m0v3d t0 s3rv3r r00m 8.",
     logEntries: [
-      { key: "Server Room B",   time: "11:02 AM", note: "Badge scan — restricted" },
-      { key: "Conference Room", time: "3:47 PM",  note: "Booked by unknown agent" },
-      { key: "Elevator C",      time: "8:55 AM",  note: "Biometric mismatch" }
-    ],
-    hint: "3=E, 1=I, 0=O. Decode the text, find the matching room in the log, strip non-digits.",
+  { key: "Elevator C",        time: "8:55 AM",  note: "Biometric mismatch — unresolved" },
+  { key: "Server Room 8",     time: "11:02 AM", note: "Badge scan — restricted zone" },
+  { key: "Parking Level 2",   time: "12:19 PM", note: "Vehicle access — unregistered plate" },
+  { key: "Cafeteria Annex",   time: "13:30 PM",  note: "Keycard swipe — guest badge" },
+  { key: "Conference Room",   time: "15:47 PM", note: "Booked at 3:47 PM, vacated 4:15 PM — unknown agent" },
+  { key: "IT Helpdesk",       time: "16:08 PM",  note: "Terminal login — no ticket raised" },
+  { key: "Rooftop Access",    time: "17:21 PM",  note: "Door forced — alarm suppressed" },
+  { key: "Executive Floor",   time: "18:33 PM",  note: "After-hours entry — no approval" }
+],
+    hint: "Use 12 hour time system, 19=7",
     answer: "347",
     digitLabel: "DIGIT 2 = 347",
     solution: 'Decoded: "The Insider used the conference room" → Log: Conference Room at 3:47 PM → 347'
   },
   {
-    id: 2,
-    name: "Acrostic Grid",
-    tag: "PATTERN RECOGNITION",
-    timer: 120,
-    desc: "Intelligence embedded a secret in this KPI dashboard. Read the first letter of each metric downward. The word you find IS the answer.",
-    render: "kpi",
-    kpis: [
-      { letter: "S", name: "Synergy Index",    val: "↑ 84%" },
-      { letter: "E", name: "Engagement Score", val: "↑ 91%" },
-      { letter: "V", name: "Velocity Rate",    val: "↑ 67%" },
-      { letter: "E", name: "Efficiency KPI",   val: "↑ 78%" },
-      { letter: "N", name: "Net Growth",       val: "↑ 53%" }
-    ],
-    clueText: '"Productivity is SEVEN times higher since the breach."',
-    hint: "Take the FIRST letter of each KPI name from top to bottom. They spell a number word.",
-    answer: "7",
-    digitLabel: "DIGIT 3 = 7",
-    solution: "First letters S-E-V-E-N spell SEVEN → 7"
-  },
+  id: 2,
+  name: "Acrostic Grid",
+  tag: "PATTERN RECOGNITION",
+  timer: 150,
+  desc: "A classified KPI report was leaked. Nine metrics are shown — but only ACTIVE ones are part of the breach file. Identify the active metrics, arrange them by their KPI code number (ascending)",
+  render: "kpi",
+  kpis: [
+    { code: "KPI-09", name: "Velocity Rate",    val: "↑ 67%", status: "ACTIVE"   },
+    { code: "KPI-03", name: "Overhead Ratio",   val: "↓ 12%", status: "INACTIVE" },
+    { code: "KPI-17", name: "Net Growth",        val: "↑ 53%", status: "ACTIVE"   },
+    { code: "KPI-07", name: "Burn Rate Index",   val: "↓ 38%", status: "INACTIVE" },
+    { code: "KPI-02", name: "Synergy Index",     val: "↑ 84%", status: "ACTIVE"   },
+    { code: "KPI-13", name: "Efficiency KPI",    val: "↑ 78%", status: "ACTIVE"   },
+    { code: "KPI-15", name: "Churn Frequency",   val: "↓ 22%", status: "INACTIVE" },
+    { code: "KPI-05", name: "Engagement Score",  val: "↑ 91%", status: "ACTIVE"   },
+    { code: "KPI-11", name: "Attrition Delta",   val: "↓ 44%", status: "INACTIVE" },
+  ],
+  clueText: '"Only ACTIVE metrics were included in the breach report. Sort by code."',
+  hint: "Filter ACTIVE only → sort KPI-digits → first letters of those names in that order.",
+  answer: "7",
+  digitLabel: "DIGIT 3 = 7",
+  solution: "ACTIVE metrics sorted by code: KPI-02 Synergy, KPI-05 Engagement, KPI-09 Velocity, KPI-13 Efficiency, KPI-17 Net → S-E-V-E-N → 7"
+},
   {
     id: 3,
     name: "Morse Intercept",
@@ -104,42 +113,66 @@ const ROUNDS = [
     solution: "..-. --- ..- .-. = F-O-U-R → FOUR → 4"
   },
   {
-    id: 4,
-    name: "Emoji Vault",
-    tag: "SYMBOLIC CIPHER",
-    timer: 90,
-    desc: "The insider left a status update disguised as emojis. Use the decoder table to translate the sequence. It spells a number word.",
-    render: "emoji",
-    emojiSequence: ["🌙","👁","🌙","⚡"],
-    decoderTable: [
-      { emoji: "🌙", letter: "N" },
-      { emoji: "👁", letter: "I" },
-      { emoji: "⚡", letter: "E" },
-      { emoji: "🔑", letter: "K" },
-      { emoji: "🌍", letter: "O" }
-    ],
-    hint: "Map each emoji to its letter using the table. The 4 letters spell a number word.",
-    answer: "9",
-    digitLabel: "DIGIT 5 = 9",
-    solution: "🌙👁🌙⚡ = N-I-N-E → NINE → 9"
-  },
+  id: 4,
+  name: "Emoji Vault",
+  tag: "SYMBOLIC CIPHER",
+  timer: 120,
+  desc: "The insider encoded a message using a classified emoji cipher. A full A–Z decoder table has been recovered. Translate the sequence — it spells a number word. Enter the digit.",
+  render: "emoji",
+  emojiSequence: ["🔥","🌍","☂️","🌹","🌮","⚡","⚡","🌑"],
+  decoderTable: [
+    { emoji: "🎯", letter: "A" },
+    { emoji: "🔋", letter: "B" },
+    { emoji: "🌙", letter: "C" },
+    { emoji: "💀", letter: "D" },
+    { emoji: "⚡", letter: "E" },
+    { emoji: "🔥", letter: "F" },
+    { emoji: "👁️", letter: "G" },
+    { emoji: "⚓", letter: "H" },
+    { emoji: "🧿", letter: "I" },
+    { emoji: "🕹️", letter: "J" },
+    { emoji: "🔑", letter: "K" },
+    { emoji: "🔒", letter: "L" },
+    { emoji: "🎭", letter: "M" },
+    { emoji: "🌑", letter: "N" },
+    { emoji: "🌍", letter: "O" },
+    { emoji: "📡", letter: "P" },
+    { emoji: "❓", letter: "Q" },
+    { emoji: "🌹", letter: "R" },
+    { emoji: "🐍", letter: "S" },
+    { emoji: "🌮", letter: "T" },
+    { emoji: "☂️", letter: "U" },
+    { emoji: "🦋", letter: "V" },
+    { emoji: "🌊", letter: "W" },
+    { emoji: "❌", letter: "X" },
+    { emoji: "💛", letter: "Y" },
+    { emoji: "🏔️", letter: "Z" }
+  ],
+  hint: " Decode each emoji, the word is a number.",
+  answer: "14",
+  digitLabel: "DIGIT 5 = 14",
+  solution: "🔥🌍☂️🌹🌮⚡⚡🌑 = F-O-U-R-T-E-E-N → FOURTEEN → 14"
+},
   {
-    id: 5,
-    name: "THE FINAL BREACH",
-    tag: "⚡ FINAL SEQUENCE",
-    timer: 180,
-    desc: "All digits collected. Apply the ordering rules below to assemble the master access code. Use hyphens between each part.",
-    render: "final",
-    collected: ["7","347","7","4","9"],
-    rules: [
-      "Single digits arranged smallest → largest",
-      "The three-digit number goes LAST"
-    ],
-    hint: "Sort 4, 7, 7, 9 ascending → then append 347 at the end.",
-    answer: "4-7-7-9-347",
-    digitLabel: "CODE: 4-7-7-9-347",
-    solution: "Single digits ascending: 4, 7, 7, 9 — then three-digit: 347 → Final code: 4-7-7-9-347"
-  }
+  id: 5,
+  name: "THE FINAL BREACH",
+  tag: "⚡ FINAL SEQUENCE",
+  timer: 180,
+  desc: "All digits collected. Read the positional rules below carefully — the order is NOT what you expect. Assemble the master access code using hyphens between each part.",
+  render: "final",
+  collected: ["8", "347", "7", "4", "14"],
+  rules: [
+    "POSITION 1 — The three-digit number",
+    "POSITION 2 — The largest single-digit number",
+    "POSITION 3 — The two-digit number",
+    "POSITION 4 — The middle single-digit number",
+    "POSITION 5 — The smallest single-digit number"
+  ],
+  hint: "Singles are 4, 7, 8. Largest=8, Middle=7, Smallest=4. Three-digit=347. Two-digit=14.,
+  answer: "347-8-14-7-4",
+  digitLabel: "CODE: 347-8-14-7-4",
+  solution: "Position rules: three-digit(347) → largest single(8) → two-digit(14) → middle single(7) → smallest single(4) → Final code: 347-8-14-7-4"
+},
 ];
 
 // ══════════════════════════════════════════════════
@@ -407,13 +440,14 @@ function tplCaptcha(r) { return `
   <div class="hint-text" style="margin-top:12px;">⚠ Find the matching room in the log. Extract only the digits from the time.</div>`; }
 
 function tplKPI(r) { return `
-  <div class="puzzle-sublabel">CORPORATE KPI DASHBOARD — Q4:</div>
+  <div class="puzzle-sublabel">LEAKED KPI REPORT — Q4 BREACH ANALYSIS:</div>
   <div class="kpi-grid">
     ${r.kpis.map(k=>`
       <div class="kpi-card">
-        <span class="kpi-letter">${k.letter}</span>
+        <span class="kpi-code">${k.code}</span>
         <span class="kpi-name">${k.name}</span>
         <span class="kpi-val">${k.val}</span>
+        <span class="kpi-status ${k.status === 'ACTIVE' ? 'kpi-active' : 'kpi-inactive'}">${k.status}</span>
       </div>`).join("")}
   </div>
   <div class="hint-text">⚠ ${r.clueText}</div>`; }
@@ -604,190 +638,162 @@ function updateTimerEl() {
 //  LEADERBOARD
 // ══════════════════════════════════════════════════
 async function loadLeaderboard() {
-  const snap = await get(playersRef);
-  if (!snap.exists()) return;
-  const players = Object.values(snap.val())
-    .filter(p => !p.isMod)
-    .sort((a,b) => (b.score||0) - (a.score||0));
-
-  const maxScore = players[0]?.score || 1;
-  const rankIcons = ["🥇","🥈","🥉"];
-  document.getElementById("lb-body").innerHTML = players.slice(0,30).map((p,i) => `
-    <tr class="${p.id===myId ? "lb-you" : ""}">
-      <td class="lb-rank ${i===0?"gold":i===1?"silver":i===2?"bronze":""}">${rankIcons[i]||"#"+(i+1)}</td>
-      <td class="lb-name">${p.name}${p.id===myId?" ◀":""}</td>
-      <td class="lb-score">${p.score||0}</td>
-      <td class="lb-bar-wrap">
-        <div class="lb-bar" style="width:${Math.round(((p.score||0)/maxScore)*100)}%"></div>
-      </td>
-    </tr>`).join("");
-  launchConfetti();
-}
-
-// ══════════════════════════════════════════════════
-//  MODERATOR DASHBOARD
-// ══════════════════════════════════════════════════
-let modTimerInt = null;
-let modTimerSec = 0;
-let currentRound = -1;
-
-async function modStartRound() {
-  const sel = document.getElementById("mod-round-select").value;
-  const dur = parseInt(document.getElementById("mod-timer-input").value) || 90;
-
-  if (sel === "-1") {
-    await set(gameRef, { phase:"waiting", moderatorId:myId });
-    showToast("Sent players to waiting room", "info"); return;
-  }
-  if (sel === "inst") {
-    await update(gameRef, { phase:"instructions" });
-    showToast("Instructions shown to players", "info"); return;
-  }
-  if (sel === "lb") { modShowLeaderboard(); return; }
-
-  const ri = parseInt(sel);
-  currentRound = ri;
-  const now = Date.now();
-
-  await update(gameRef, {
-    phase: "game",
-    currentRound: ri,
-    roundDuration: dur,
-    roundStartedAt: now,
-    roundActive: true,
-    reveal: null
-  });
-
-  // Reset submissions counter display
-  document.getElementById("mod-stat-subs").textContent = "0";
-  startModTimer(dur);
-
-  // Listen for submission count
-  onValue(ref(db, "submissions"), snap => {
+    const snap = await get(playersRef);
     if (!snap.exists()) return;
-    const all = snap.val();
-    let count = 0;
-    Object.values(all).forEach(playerSubs => {
-      if (playerSubs[ri]) count++;
-    });
-    const el = document.getElementById("mod-stat-subs");
-    if (el) el.textContent = count;
-  });
+    const players = Object.values(snap.val())
+      .filter(p => !p.isMod)
+      .sort((a,b) => (b.score||0) - (a.score||0));
 
-  showToast("▶ Round " + (ri+1) + " started — " + dur + "s", "success");
-}
+    const maxScore = players[0]?.score || 1;
+    const top3 = players.slice(0,3);
+    const rest  = players.slice(3);
+    const crowns = ["👑","🥈","🥉"];
+    const labels = ["1ST","2ND","3RD"];
+    const ranks  = ["rank-1","rank-2","rank-3"];
+    const order  = [1,0,2];
 
-function startModTimer(sec) {
-  if (modTimerInt) clearInterval(modTimerInt);
-  modTimerSec = sec;
-  updateModTimerEl();
-  modTimerInt = setInterval(async () => {
-    modTimerSec--;
-    updateModTimerEl();
-    if (modTimerSec <= 0) {
-      clearInterval(modTimerInt); modTimerInt = null;
-      await update(gameRef, { roundActive: false });
-      showToast("⏰ Timer ended", "info");
+    // Podium
+    const stage = document.getElementById("podium-stage");
+    if(stage){
+      stage.innerHTML = order.map(i=>{
+        const p = top3[i]; if(!p) return "";
+        const init = p.name.charAt(0).toUpperCase();
+        return `
+          <div class="podium-slot ${ranks[i]}">
+            <div class="podium-card">
+              <div class="podium-crown">${crowns[i]}</div>
+              <div class="podium-avatar">${init}</div>
+              <div class="podium-name">${p.name}</div>
+              <div class="podium-score">${(p.score||0).toLocaleString()}</div>
+            </div>
+            <div class="podium-block">
+              <span class="podium-rank-num">${labels[i]}</span>
+              ${i===0?'<div class="podium-laser"></div>':''}
+            </div>
+          </div>`;
+      }).join("");
     }
-  }, 1000);
-}
 
-function updateModTimerEl() {
-  const el = document.getElementById("mod-timer-display");
-  if (!el) return;
-  const m = Math.floor(modTimerSec/60), s = modTimerSec%60;
-  el.textContent = m + ":" + String(s).padStart(2,"0");
-  el.style.color = modTimerSec <= 10 ? "var(--red)" : "var(--green)";
-}
+    // Table (4th+)
+    const tbody = document.getElementById("lb-tbody");
+    if(tbody){
+      tbody.innerHTML = rest.map((p,idx)=>{
+        const rank = idx+4;
+        const isYou = p.id === myId;
+        const pct = Math.round(((p.score||0)/maxScore)*100);
+        return `
+          <tr class="lb-row ${isYou?'is-you-row':''}">
+            <td class="lb-rank-cell">#${rank}</td>
+            <td class="lb-name-cell ${isYou?'is-you':''}">${p.name}</td>
+            <td class="lb-score-cell">${(p.score||0).toLocaleString()}</td>
+            <td class="lb-bar-cell">
+              <div class="lb-bar-track">
+                <div class="lb-bar-fill" data-pct="${pct}"></div>
+              </div>
+            </td>
+          </tr>`;
+      }).join("");
+      setTimeout(()=>{
+        document.querySelectorAll(".lb-bar-fill").forEach(el=>{
+          el.style.width = el.dataset.pct + "%";
+        });
+      }, 2800);
+    }
 
-async function modEndRound() {
-  if (modTimerInt) { clearInterval(modTimerInt); modTimerInt = null; }
-  await update(gameRef, { roundActive: false });
-  showToast("■ Round ended early", "info");
-}
-
-async function modRevealAnswer() {
-  if (currentRound < 0 || currentRound >= ROUNDS.length) {
-    showToast("⚠ No active round", "error"); return;
+    // Celebrations
+    setTimeout(launchConfetti, 2000);
+    setTimeout(glitchFlash,    2000);
+    setInterval(launchConfetti, 12000);
   }
-  const r = ROUNDS[currentRound];
-  await update(gameRef, {
-    phase: "reveal",
-    reveal: { digitLabel: r.digitLabel, solution: r.solution }
-  });
-  showToast("👁 Answer revealed to all players", "success");
-}
-
-async function modNextRound() {
-  const next = currentRound + 1;
-  if (next >= ROUNDS.length) { modShowLeaderboard(); return; }
-  document.getElementById("mod-round-select").value = String(next);
-  document.getElementById("mod-timer-input").value = String(ROUNDS[next].timer);
-  modStartRound();
-}
-
-async function modShowLeaderboard() {
-  await update(gameRef, { phase: "leaderboard" });
-  showToast("📊 Leaderboard displayed", "info");
-}
-
-async function modResetGame() {
-  if (!confirm("Reset entire game? All scores and data will be wiped.")) return;
-  if (modTimerInt) { clearInterval(modTimerInt); modTimerInt = null; }
-  await set(gameRef, { phase:"waiting", moderatorId:myId });
-  await set(playersRef, null);
-  await set(subsRef, null);
-  document.getElementById("mod-timer-display").textContent = "—";
-  currentRound = -1;
-  showToast("↺ Game fully reset", "error");
-}
-
-async function refreshModDashboard() {
-  const snap = await get(playersRef);
-  const players = snap.exists() ? Object.values(snap.val()) : [];
-  refreshModPlayers(players);
-}
-
-function refreshModPlayers(players) {
-  const online  = players.filter(p=>p.online && !p.isMod);
-  const sorted  = [...players].filter(p=>!p.isMod).sort((a,b)=>(b.score||0)-(a.score||0));
-
-  const el = document.getElementById("mod-stat-online");
-  if (el) el.textContent = online.length;
-
-  // Player list
-  const pList = document.getElementById("mod-player-list");
-  if (pList) {
-    pList.innerHTML = online.length === 0
-      ? '<div style="font-size:12px;color:var(--g-dim);">No players connected</div>'
-      : online.map(p=>`
-        <div class="player-item">
-          <span class="player-dot online"></span>
-          <span class="player-name-sm">${p.name}</span>
-          <span class="player-score-sm">${p.score||0}</span>
-        </div>`).join("");
-  }
-
-  // Score preview
-  const sPrev = document.getElementById("mod-score-preview");
-  if (sPrev) {
-    sPrev.innerHTML = sorted.length === 0
-      ? '<div style="font-size:12px;color:var(--g-dim);">No scores yet</div>'
-      : sorted.slice(0,10).map((p,i)=>`
-        <div class="player-item">
-          <span style="font-family:var(--f-display);font-size:11px;color:var(--g-dim);width:24px;">#${i+1}</span>
-          <span class="player-name-sm">${p.name}</span>
-          <span class="player-score-sm">${p.score||0}</span>
-        </div>`).join("");
-  }
-}
-
+     
 // Auto-refresh mod dashboard every 5s
 setInterval(() => { if (isMod) refreshModDashboard(); }, 5000);
 
 // ══════════════════════════════════════════════════
 //  UTILS
 // ══════════════════════════════════════════════════
+function launchConfetti(){
+  const colors = [
+    "#ffd700","#00ff41","#ff003c","#00e5ff",
+    "#ffb000","#ffffff","#c8d6e5","#cd7f32"
+  ];
+  const shapes = ["50%","2px","4px"];
+
+  for(let i=0;i<120;i++){
+    setTimeout(()=>{
+      const el    = document.createElement("div");
+      el.className= "confetti-piece";
+      const size  = Math.random()*10+4;
+      el.style.cssText = `
+        left:${Math.random()*100}vw;
+        background:${colors[Math.floor(Math.random()*colors.length)]};
+        width:${size}px;
+        height:${size * (Math.random()>.5?1:2.5)}px;
+        border-radius:${shapes[Math.floor(Math.random()*shapes.length)]};
+        animation-duration:${Math.random()*2+1.8}s;
+        animation-delay:${Math.random()*0.3}s;
+        opacity:0.9;
+      `;
+      document.body.appendChild(el);
+      setTimeout(()=>el.remove(), 4500);
+    }, i*18);
+  }
+
+  setTimeout(()=>{
+    for(let i=0;i<80;i++){
+      setTimeout(()=>{
+        const el    = document.createElement("div");
+        el.className= "confetti-piece";
+        const size  = Math.random()*8+3;
+        el.style.cssText = `
+          left:${Math.random()*100}vw;
+          background:${colors[Math.floor(Math.random()*colors.length)]};
+          width:${size}px;
+          height:${size*(Math.random()>.5?1:3)}px;
+          border-radius:${shapes[Math.floor(Math.random()*shapes.length)]};
+          animation-duration:${Math.random()*2+2}s;
+          animation-delay:0s;
+          opacity:0.85;
+        `;
+        document.body.appendChild(el);
+        setTimeout(()=>el.remove(), 5000);
+      }, i*22);
+    }
+  }, 2200);
+
+  setTimeout(()=>{
+    for(let i=0;i<60;i++){
+      setTimeout(()=>{
+        const el    = document.createElement("div");
+        el.className= "confetti-piece";
+        const size  = Math.random()*6+4;
+        el.style.cssText = `
+          left:${30+Math.random()*40}vw;
+          background:${ Math.random()>.4 ? "#ffd700" : "#ffb000" };
+          width:${size}px; height:${size}px;
+          border-radius:50%;
+          animation-duration:${Math.random()*1.5+1.2}s;
+          animation-delay:${Math.random()*0.4}s;
+          box-shadow:0 0 6px #ffd700;
+          opacity:1;
+        `;
+        document.body.appendChild(el);
+        setTimeout(()=>el.remove(), 4000);
+      }, i*25);
+    }
+  }, 2100);
+}
+
+function glitchFlash(){
+  const flashes = [0, 80, 160, 400, 480];
+  flashes.forEach(delay=>{
+    setTimeout(()=>{
+      document.body.style.filter = "invert(0.06) hue-rotate(10deg)";
+      setTimeout(()=>{ document.body.style.filter=""; }, 40);
+    }, delay);
+  });
+}
+     
 function glitchTransition(cb) {
   const ov = document.getElementById("glitch-overlay");
   ov.style.opacity = "0.25";
@@ -1109,6 +1115,32 @@ body::before{
 .kpi-letter{font-family:var(--f-display);font-size:30px;font-weight:900;color:var(--green);display:block;text-shadow:0 0 16px var(--g-glow);}
 .kpi-name{font-size:9px;letter-spacing:.18em;color:var(--g-dim);display:block;margin-top:4px;}
 .kpi-val{font-family:var(--f-crt);font-size:22px;color:var(--amber);display:block;margin-top:6px;}
+.kpi-code {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  color: var(--g-dim);
+  letter-spacing: .15em;
+  display: block;
+  margin-bottom: 4px;
+}
+.kpi-status {
+  display: inline-block;
+  font-family: var(--f-display);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .2em;
+  padding: 2px 8px;
+  margin-top: 6px;
+}
+.kpi-active {
+  border: 1px solid var(--green);
+  color: var(--green);
+}
+.kpi-inactive {
+  border: 1px solid var(--g-dim);
+  color: var(--g-dim);
+  opacity: 0.5;
+}
 
 /* Morse */
 .morse-display{
@@ -1212,28 +1244,368 @@ body::before{
 /* ════════════════════════════════════════════════
    LEADERBOARD
 ════════════════════════════════════════════════ */
-#screen-leaderboard{min-height:100vh;padding:40px 20px;max-width:680px;margin:0 auto;}
-.lb-title{
-  font-family:var(--f-display);font-size:clamp(20px,4vw,34px);font-weight:900;
-  letter-spacing:.15em;text-align:center;margin-bottom:6px;text-shadow:0 0 24px var(--green);
+/* ════════════════════════════════
+   PODIUM  (top 3)
+════════════════════════════════ */
+.podium-section {
+  max-width:780px;
+  margin: 48px auto 0;
+  padding: 0 20px;
+  opacity:0;
+  animation: fadeUp 0.7s ease-out 1.3s forwards;
 }
-.lb-sub{font-size:11px;letter-spacing:.22em;color:var(--g-dim);text-align:center;margin-bottom:30px;}
 
-.lb-table{width:100%;border-collapse:collapse;}
-.lb-table th{
-  font-family:var(--f-display);font-size:9px;letter-spacing:.3em;color:var(--g-dim);
-  text-align:left;padding:8px 12px;border-bottom:1px solid var(--g-border);
+.podium-label {
+  font-family: var(--f-disp);
+  font-size: 10px;
+  font-weight:700;
+  letter-spacing:0.4em;
+  color:var(--g-dim);
+  text-align:center;
+  margin-bottom: 32px;
 }
-.lb-table td{padding:12px;border-bottom:1px solid rgba(0,255,65,.06);font-size:14px;vertical-align:middle;}
-.lb-rank{font-family:var(--f-display);font-weight:700;font-size:14px;width:50px;}
-.lb-rank.gold{color:#ffd700;text-shadow:0 0 10px #ffd700;}
-.lb-rank.silver{color:#c0c0c0;text-shadow:0 0 8px #c0c0c0;}
-.lb-rank.bronze{color:#cd7f32;text-shadow:0 0 8px #cd7f32;}
-.lb-name{font-family:var(--f-mono);color:var(--green);}
-.lb-score{font-family:var(--f-crt);font-size:24px;color:var(--amber);text-align:right;}
-.lb-bar-wrap{width:110px;}
-.lb-bar{height:5px;background:var(--green);box-shadow:0 0 6px var(--green);transition:width .8s ease;}
-.lb-you{background:rgba(0,255,65,.05);}
+
+.podium-stage {
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
+  gap:12px;
+}
+
+/* Individual podium slot */
+.podium-slot {
+  display:flex; flex-direction:column; align-items:center;
+  position:relative;
+}
+
+/* Avatar / name card above the block */
+.podium-card {
+  display:flex; flex-direction:column; align-items:center;
+  margin-bottom:12px;
+  position:relative;
+}
+
+.podium-crown {
+  font-size:28px;
+  margin-bottom:4px;
+  animation: crownFloat 3s ease-in-out infinite;
+}
+@keyframes crownFloat {
+  0%,100%{ transform:translateY(0) rotate(-5deg); }
+  50%    { transform:translateY(-6px) rotate(5deg); }
+}
+
+.podium-avatar {
+  width:64px; height:64px;
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  font-family: var(--f-disp);
+  font-size:22px;
+  font-weight:900;
+  position:relative;
+  margin-bottom:10px;
+}
+
+/* Rank-specific avatar colors */
+.podium-slot.rank-1 .podium-avatar {
+  background: radial-gradient(135deg, rgba(255,215,0,0.2), rgba(255,215,0,0.05));
+  border: 2px solid var(--gold);
+  color: var(--gold);
+  box-shadow: 0 0 24px rgba(255,215,0,0.35), 0 0 60px rgba(255,215,0,0.1);
+  animation: avatarPulse1 2s ease-in-out infinite;
+}
+.podium-slot.rank-2 .podium-avatar {
+  background: radial-gradient(135deg, rgba(200,214,229,0.15), rgba(200,214,229,0.03));
+  border: 2px solid var(--silver);
+  color: var(--silver);
+  box-shadow: 0 0 16px rgba(200,214,229,0.25);
+}
+.podium-slot.rank-3 .podium-avatar {
+  background: radial-gradient(135deg, rgba(205,127,50,0.15), rgba(205,127,50,0.03));
+  border: 2px solid var(--bronze);
+  color: var(--bronze);
+  box-shadow: 0 0 14px rgba(205,127,50,0.2);
+}
+
+@keyframes avatarPulse1 {
+  0%,100%{ box-shadow:0 0 24px rgba(255,215,0,0.35),0 0 60px rgba(255,215,0,0.1); }
+  50%    { box-shadow:0 0 36px rgba(255,215,0,0.55),0 0 80px rgba(255,215,0,0.2); }
+}
+
+.podium-name {
+  font-family: var(--f-mono);
+  font-size:13px;
+  letter-spacing:0.1em;
+  text-align:center;
+  max-width:110px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.podium-slot.rank-1 .podium-name { color:var(--gold); font-size:14px; }
+.podium-slot.rank-2 .podium-name { color:var(--silver); }
+.podium-slot.rank-3 .podium-name { color:var(--bronze); }
+
+.podium-score {
+  font-family: var(--f-crt);
+  font-size:28px;
+  margin-top:4px;
+  letter-spacing:0.1em;
+}
+.podium-slot.rank-1 .podium-score { color:var(--gold); font-size:34px; text-shadow:0 0 12px rgba(255,215,0,0.5); }
+.podium-slot.rank-2 .podium-score { color:var(--silver); }
+.podium-slot.rank-3 .podium-score { color:var(--bronze); }
+
+/* The actual podium block */
+.podium-block {
+  width:120px;
+  position:relative;
+  display:flex; align-items:center; justify-content:center;
+  padding:14px 0;
+  border: 1px solid;
+  overflow:hidden;
+}
+
+.podium-block::before {
+  content:'';
+  position:absolute; inset:0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.04), transparent);
+}
+
+.podium-block::after {
+  content:'';
+  position:absolute; top:0; left:0; right:0; height:1px;
+}
+
+.podium-slot.rank-1 .podium-block {
+  height:110px;
+  border-color: var(--gold);
+  background: linear-gradient(180deg, rgba(255,215,0,0.08), rgba(255,215,0,0.02));
+  box-shadow: 0 0 30px rgba(255,215,0,0.15), inset 0 0 20px rgba(255,215,0,0.04);
+}
+.podium-slot.rank-1 .podium-block::after { background:var(--gold); box-shadow:0 0 10px var(--gold); }
+
+.podium-slot.rank-2 .podium-block {
+  height:80px;
+  border-color: var(--silver);
+  background: linear-gradient(180deg, rgba(200,214,229,0.06), rgba(200,214,229,0.01));
+  box-shadow: 0 0 20px rgba(200,214,229,0.1);
+}
+.podium-slot.rank-2 .podium-block::after { background:var(--silver); }
+
+.podium-slot.rank-3 .podium-block {
+  height:60px;
+  border-color: var(--bronze);
+  background: linear-gradient(180deg, rgba(205,127,50,0.06), rgba(205,127,50,0.01));
+  box-shadow: 0 0 20px rgba(205,127,50,0.1);
+}
+.podium-slot.rank-3 .podium-block::after { background:var(--bronze); }
+
+.podium-rank-num {
+  font-family: var(--f-disp);
+  font-size:28px;
+  font-weight:900;
+  position:relative; z-index:1;
+}
+.podium-slot.rank-1 .podium-rank-num { color:var(--gold); text-shadow:0 0 12px rgba(255,215,0,0.6); }
+.podium-slot.rank-2 .podium-rank-num { color:var(--silver); }
+.podium-slot.rank-3 .podium-rank-num { color:var(--bronze); }
+
+/* Laser beam under #1 */
+.podium-laser {
+  position:absolute;
+  bottom:0; left:50%;
+  transform:translateX(-50%);
+  width:2px; height:0;
+  background:var(--gold);
+  box-shadow:0 0 8px var(--gold);
+  animation:laserGrow 1s ease-out 2s forwards;
+}
+@keyframes laserGrow{
+  from{height:0;opacity:0}
+  to{height:60px;opacity:1}
+}
+
+/* Staggered podium entrance animations */
+.podium-slot.rank-2 {
+  animation: podiumRise 0.6s cubic-bezier(0.34,1.56,0.64,1) 1.6s both;
+}
+.podium-slot.rank-3 {
+  animation: podiumRise 0.6s cubic-bezier(0.34,1.56,0.64,1) 1.8s both;
+}
+.podium-slot.rank-1 {
+  animation: podiumRise 0.7s cubic-bezier(0.34,1.56,0.64,1) 2s both;
+}
+@keyframes podiumRise {
+  from { opacity:0; transform:translateY(30px) scale(0.9); }
+  to   { opacity:1; transform:translateY(0) scale(1); }
+}
+
+/* ════════════════════════════════
+   REST OF LEADERBOARD
+════════════════════════════════ */
+.lb-rest {
+  max-width:700px;
+  margin: 48px auto 0;
+  padding: 0 20px;
+  opacity:0;
+  animation: fadeUp 0.6s ease-out 2.4s forwards;
+}
+
+.lb-rest-title {
+  font-family:var(--f-disp);
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:0.4em;
+  color:var(--g-dim);
+  margin-bottom:16px;
+  text-align:center;
+}
+
+.lb-table {
+  width:100%;
+  border-collapse:collapse;
+}
+
+.lb-table th {
+  font-family:var(--f-disp);
+  font-size:9px;
+  letter-spacing:0.3em;
+  color:var(--g-dim);
+  text-align:left;
+  padding:8px 12px;
+  border-bottom:1px solid var(--g-border);
+}
+
+.lb-row {
+  border-bottom:1px solid rgba(0,255,65,0.06);
+  transition:background 0.2s;
+  opacity:0;
+  animation: rowIn 0.4s ease-out forwards;
+}
+.lb-row:hover { background:rgba(0,255,65,0.03); }
+
+/* Stagger each row */
+.lb-row:nth-child(1)  { animation-delay:2.5s; }
+.lb-row:nth-child(2)  { animation-delay:2.6s; }
+.lb-row:nth-child(3)  { animation-delay:2.7s; }
+.lb-row:nth-child(4)  { animation-delay:2.8s; }
+.lb-row:nth-child(5)  { animation-delay:2.9s; }
+.lb-row:nth-child(6)  { animation-delay:3.0s; }
+.lb-row:nth-child(7)  { animation-delay:3.1s; }
+.lb-row:nth-child(8)  { animation-delay:3.2s; }
+.lb-row:nth-child(9)  { animation-delay:3.3s; }
+.lb-row:nth-child(10) { animation-delay:3.4s; }
+
+@keyframes rowIn {
+  from { opacity:0; transform:translateX(-12px); }
+  to   { opacity:1; transform:translateX(0); }
+}
+
+.lb-row td { padding:11px 12px; font-size:13px; vertical-align:middle; }
+
+.lb-rank-cell {
+  font-family:var(--f-disp);
+  font-weight:700;
+  font-size:12px;
+  color:var(--g-dim);
+  width:44px;
+}
+
+.lb-name-cell { font-family:var(--f-mono); color:var(--green); }
+.lb-name-cell.is-you::after {
+  content:' ◀ YOU';
+  font-size:9px;
+  letter-spacing:0.2em;
+  color:var(--cyan);
+  margin-left:8px;
+}
+
+.lb-score-cell {
+  font-family:var(--f-crt);
+  font-size:22px;
+  color:var(--amber);
+  text-align:right;
+}
+
+.lb-bar-cell { width:120px; padding-right:16px; }
+.lb-bar-track {
+  height:4px;
+  background:rgba(0,255,65,0.08);
+  border-radius:2px;
+  overflow:hidden;
+}
+.lb-bar-fill {
+  height:100%;
+  background:var(--green);
+  box-shadow:0 0 6px var(--green);
+  width:0;
+  transition:width 1.2s cubic-bezier(0.4,0,0.2,1);
+  border-radius:2px;
+}
+
+.lb-row.is-you-row { background:rgba(0,229,255,0.03); }
+
+/* ════════════════════════════════
+   FOOTER
+════════════════════════════════ */
+.lb-footer {
+  text-align:center;
+  padding:40px 20px 0;
+  opacity:0;
+  animation:fadeUp 0.5s ease-out 3.8s forwards;
+}
+.lb-footer-text {
+  font-family:var(--f-crt);
+  font-size:22px;
+  color:var(--g-dim);
+  letter-spacing:0.3em;
+}
+.lb-footer-mission {
+  font-family:var(--f-disp);
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:0.5em;
+  color:rgba(0,255,65,0.2);
+  margin-top:8px;
+}
+
+/* ════════════════════════════════
+   CONFETTI SYSTEM
+════════════════════════════════ */
+.confetti-piece {
+  position:fixed;
+  pointer-events:none;
+  z-index:9998;
+  top:-16px;
+  animation:cFall linear forwards;
+}
+@keyframes cFall {
+  to { transform:translateY(110vh) rotate(900deg); opacity:0; }
+}
+
+/* Sparks for #1 */
+.spark {
+  position:fixed;
+  width:3px; height:3px;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:9997;
+  animation:sparkBurst linear forwards;
+}
+@keyframes sparkBurst {
+  0%   { opacity:1; transform:translate(0,0) scale(1); }
+  100% { opacity:0; transform:var(--tx) scale(0); }
+}
+
+/* ════════════════════════════════
+   SCROLLBAR
+════════════════════════════════ */
+::-webkit-scrollbar { width:3px; }
+::-webkit-scrollbar-track { background:var(--bg); }
+::-webkit-scrollbar-thumb { background:var(--g-dim); }
+
+
 
 /* ════════════════════════════════════════════════
    MODERATOR DASHBOARD
@@ -1399,18 +1771,50 @@ body::before{
 </div>
 
 <!-- ════════════════  LEADERBOARD  ════════════════ -->
-<div id="screen-leaderboard" class="screen hidden">
-  <div class="lb-title">🏆 FINAL STANDINGS</div>
-  <div class="lb-sub">MISSION 404 — OPERATION COMPLETE</div>
-  <table class="lb-table">
-    <thead>
-      <tr>
-        <th>RANK</th><th>AGENT</th>
-        <th style="text-align:right">SCORE</th><th>RATING</th>
-      </tr>
-    </thead>
-    <tbody id="lb-body"></tbody>
-  </table>
+<div id="lb-screen">
+
+  <!-- ── HEADER ── -->
+  <div class="lb-header">
+    <div class="lb-operation">// OPERATION COMPLETE — ALL OBJECTIVES CLEARED</div>
+    <div class="lb-title-main">MISSION 404</div>
+    <div class="lb-title-sub">BREACH PROTOCOL — FINAL STANDINGS</div>
+    <div class="lb-divider">
+      <div class="lb-divider-line"></div>
+      <div class="lb-divider-icon">★ TOP AGENTS ★</div>
+      <div class="lb-divider-line"></div>
+    </div>
+  </div>
+
+  <!-- ── PODIUM ── -->
+  <div class="podium-section">
+    <div class="podium-label">// CLASSIFIED — AGENT RANKINGS</div>
+    <div class="podium-stage" id="podium-stage">
+      <!-- Rendered by JS -->
+    </div>
+  </div>
+
+  <!-- ── REST OF TABLE ── -->
+  <div class="lb-rest">
+    <div class="lb-rest-title">// FULL MISSION DEBRIEF</div>
+    <table class="lb-table">
+      <thead>
+        <tr>
+          <th>RANK</th>
+          <th>AGENT</th>
+          <th style="text-align:right">SCORE</th>
+          <th>RATING</th>
+        </tr>
+      </thead>
+      <tbody id="lb-tbody"></tbody>
+    </table>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <div class="lb-footer">
+    <div class="lb-footer-text">[ MISSION COMPLETE ]</div>
+    <div class="lb-footer-mission">MISSION 404 — BREACH PROTOCOL — CLASSIFIED</div>
+  </div>
+
 </div>
 
 <!-- ════════════════  MOD DASHBOARD  ════════════════ -->
