@@ -265,11 +265,13 @@ function handleGameState(gs) {
 // ══════════════════════════════════════════════════
 //  LOGIN
 // ══════════════════════════════════════════════════
-document.getElementById("chk-mod").addEventListener("change", e => {
-  document.getElementById("mod-pw-group").style.display = e.target.checked ? "block" : "none";
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("chk-mod").addEventListener("change", e => {
+    document.getElementById("mod-pw-group").style.display = e.target.checked ? "block" : "none";
+  });
+  document.getElementById("inp-name").addEventListener("keydown", e => { if(e.key==="Enter") handleLogin(); });
+  document.getElementById("inp-modpw").addEventListener("keydown", e => { if(e.key==="Enter") handleLogin(); });
 });
-document.getElementById("inp-name").addEventListener("keydown", e => { if(e.key==="Enter") handleLogin(); });
-document.getElementById("inp-modpw").addEventListener("keydown", e => { if(e.key==="Enter") handleLogin(); });
 
 async function handleLogin() {
   const name = document.getElementById("inp-name").value.trim();
