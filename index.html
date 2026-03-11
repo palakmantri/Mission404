@@ -42,14 +42,14 @@ const ROUNDS = [
     id: 0,
     name: "Mirror Cipher",
     tag: "CRYPTOGRAPHY",
-    timer: 60,
+    timer: 90,
     desc: "A message was intercepted from the insider's terminal. Decode it to find your digit.",
     render: "mirror",
-    cipherText: "FIND THE MOLE BEFORE THEY BREACH THE SECURE TERMINAL. NINE AGENTS CONFIRMED THE OPERATION WAS REAL. EHT TIGID SEDIH NI EHT DROW-T TNUOC.",
-    hint: "Reverse each word individually and solve the mystery",
+    cipherText: "TEGRAT EHT ELOM EROFEB YEHT SSECCA EHT .TLUAV THGIE SELIF MRIFNOC EHT HCAERB SAW .LAER EHT TIGID SEDIH NI EHT DROW-T .TNUOC",
+    hint: "Reverse each word individually and enter Digit",
     answer: "8",
     digitLabel: "DIGIT 1 = 8",
-    solution: "Decoded: 'FIND THE MOLE BEFORE THEY BREACH THE SECURE TERMINAL. EIGHT AGENTS CONFIRMED THE OPERATION WAS REAL. THE DIGIT HIDES IN THE T-WORD COUNT.' — Count T-words: THE(1) THEY(2) THE(3) TERMINAL(4) THE(5) THE(6) THE(7) T(8). Answer: 8"
+    solution: "Decoded: 'TARGET THE MOLE BEFORE THEY ACCESS THE VAULT. EIGHT FILES CONFIRM THE BREACH WAS REAL. THE DIGIT HIDES IN THE T-WORD COUNT.' — Count T-words: TARGET, THE, THEY, THE, THE, THE, THE, T = 8. The word EIGHT confirms it. Answer: 8"
   },
   {
     id: 1,
@@ -58,10 +58,10 @@ const ROUNDS = [
     timer: 90,
     desc: "Our system captured a distorted transmission. Decode the l33tspeak and cross-reference the access log. Extract only digits from the matching entry.",
     render: "captcha",
-    captchaText: "Th3 1ns1d3r us3d th3 c0nf3r3nc3 r00m, Th3 f1l3s w3r3 m0v3d t0 s3rv3r r00m 5.",
+    captchaText: "Th3 1ns1d3r us3d th3 c0nf3r3nc3 r00m, Th3 f1l3s w3r3 m0v3d t0 s3rv3r r00m 8.",
     logEntries: [
   { key: "Elevator C",        time: "8:55 AM",  note: "Biometric mismatch — unresolved" },
-  { key: "Server Room 5",     time: "11:02 AM", note: "Badge scan — restricted zone" },
+  { key: "Server Room 8",     time: "11:02 AM", note: "Badge scan — restricted zone" },
   { key: "Parking Level 2",   time: "12:19 PM", note: "Vehicle access — unregistered plate" },
   { key: "Cafeteria Annex",   time: "13:30 PM",  note: "Keycard swipe — guest badge" },
   { key: "Conference Room",   time: "15:47 PM", note: "Booked at 3:47 PM, vacated 4:15 PM — unknown agent" },
@@ -78,8 +78,8 @@ const ROUNDS = [
   id: 2,
   name: "Acrostic Grid",
   tag: "PATTERN RECOGNITION",
-  timer: 120,
-  desc: "A classified KPI report was leaked. Nine metrics are shown — but only ACTIVE ones are part of the breach file. Identify the active metrics, arrange them by their KPI code NUMBER (ascending)",
+  timer: 150,
+  desc: "A classified KPI report was leaked. Nine metrics are shown — but only ACTIVE ones are part of the breach file. Identify the active metrics, arrange them by their KPI code number (ascending)",
   render: "kpi",
   kpis: [
     { code: "KPI-09", name: "Velocity Rate",    val: "↑ 67%", status: "ACTIVE"   },
@@ -99,38 +99,24 @@ const ROUNDS = [
   solution: "ACTIVE metrics sorted by code: KPI-02 Synergy, KPI-05 Engagement, KPI-09 Velocity, KPI-13 Efficiency, KPI-17 Net → S-E-V-E-N → 7"
 },
   {
-  id: 3,
-  name: "Morse Intercept",
-  tag: "SIGNAL DECODING",
-  timer: 120,
-  desc: "Three transmissions were intercepted across classified frequencies. Decode all three signals carefully. Enter the number it represents.",
-  render: "morse",
-  morseLabel: "INTERCEPTED — TRI-FREQUENCY SCAN:",
-  morseSignals: [
-    {
-      label: "SIGNAL A — FREQ 512.3 MHz",
-      code: "- .... .  .. -. ... .. -.. . .-.  .-- .- ...  ... . . -.  .-.. . .- ...- .. -. --.  - .... .-. --- ..- --. ....  - .... .  -... .- -.-. -.-  . -..- .. -"
-    },
-    {
-      label: "SIGNAL B — FREQ 404.7 MHz",
-      code: ".... . -.--  -.-- --- ..-  .... .- ...- .  -... . . -.  ..-. --- --- .-.. . -..  - .... .  -.. .. --. .. -  .. ...  .. -.  ... .. --. -. .- .-..  -.-."
-    },
-    {
-      label: "SIGNAL C — FREQ 313.9 MHz",
-      code: "-... .-. . .- -.-. ....  -.-. --- -. ..-. .. .-. -- . -..  .- -  ... . -.-. - --- .-.  ..-. --- ..- .-.  .- .-.. . .-. -  .- .-.. .-..  .- --. . -. - ..."
-    }
-  ],
-  morseDisplay: "",
-  hint: "Decode Signal C: BREACH CONFIRMED AT SECTOR ___ ALERT ALL AGENTS. The blank is a number word.",
-  answer: "4",
-  digitLabel: "DIGIT 4 = 4",
-  solution: "Signal A is a red herring. Signal B taunts you . Signal C: 'BREACH CONFIRMED AT SECTOR FOUR ALERT ALL AGENTS' → FOUR → 4"
-},
+    id: 3,
+    name: "Morse Intercept",
+    tag: "SIGNAL DECODING",
+    timer: 90,
+    desc: "A Morse transmission was intercepted on a classified frequency. Decode the signal. Enter the number it represents.",
+    render: "morse",
+    morseDisplay: "..-. --- ..- .-.",
+    morseLabel: "PRIORITY SIGNAL — FREQ 404.7 MHz:",
+    hint: "F=..-. O=--- U=..- R=.-. — decode letter by letter. What number word does it spell?",
+    answer: "4",
+    digitLabel: "DIGIT 4 = 4",
+    solution: "..-. --- ..- .-. = F-O-U-R → FOUR → 4"
+  },
   {
   id: 4,
   name: "Emoji Vault",
   tag: "SYMBOLIC CIPHER",
-  timer: 45,
+  timer: 120,
   desc: "The insider encoded a message using a classified emoji cipher. A full A–Z decoder table has been recovered. Translate the sequence — it spells a number word. Enter the digit.",
   render: "emoji",
   emojiSequence: ["🔥","🌍","☂️","🌹","🌮","⚡","⚡","🌑"],
@@ -172,18 +158,20 @@ const ROUNDS = [
   name: "THE FINAL BREACH",
   tag: "⚡ FINAL SEQUENCE",
   timer: 180,
-  desc: "All digits collected. The master code is locked behind an ancient sequencing cipher. Decode the rule below and assemble the code using hyphens between each part.",
+  desc: "All digits collected. Read the positional rules below carefully — the order is NOT what you expect. Assemble the master access code using hyphens between each part.",
   render: "final",
   collected: ["8", "347", "7", "4", "14"],
   rules: [
-    "Darkness favours balance.",
-    "Those who bow to two go first - smallest to largest.",
-    "The lone wolves follow - weakest before strongest."
+    "POSITION 1 — The three-digit number",
+    "POSITION 2 — The largest single-digit number",
+    "POSITION 3 — The two-digit number",
+    "POSITION 4 — The middle single-digit number",
+    "POSITION 5 — The smallest single-digit number"
   ],
-  hint: "'Bow to two' = divisible by 2. 'Lone wolves' = odd numbers. Evens ascending then odds ascending → 4-8-14-7-347",
-  answer: "4-8-14-7-347",
-  digitLabel: "CODE: 4-8-14-7-347",
-  solution: "Even numbers (bow to two) ascending: 4, 8, 14 → Odd numbers (lone wolves) ascending: 7, 347 → Final code: 4-8-14-7-347"
+  hint: "Singles are 4, 7, 8. Largest=8, Middle=7, Smallest=4. Three-digit=347. Two-digit=14. Order: 347-8-14-7-4",
+  answer: "347-8-14-7-4",
+  digitLabel: "CODE: 347-8-14-7-4",
+  solution: "Position rules: three-digit(347) → largest single(8) → two-digit(14) → middle single(7) → smallest single(4) → Final code: 347-8-14-7-4"
 },
 ];
 
@@ -265,13 +253,11 @@ function handleGameState(gs) {
 // ══════════════════════════════════════════════════
 //  LOGIN
 // ══════════════════════════════════════════════════
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("chk-mod").addEventListener("change", e => {
-    document.getElementById("mod-pw-group").style.display = e.target.checked ? "block" : "none";
-  });
-  document.getElementById("inp-name").addEventListener("keydown", e => { if(e.key==="Enter") handleLogin(); });
-  document.getElementById("inp-modpw").addEventListener("keydown", e => { if(e.key==="Enter") handleLogin(); });
+document.getElementById("chk-mod").addEventListener("change", e => {
+  document.getElementById("mod-pw-group").style.display = e.target.checked ? "block" : "none";
 });
+document.getElementById("inp-name").addEventListener("keydown", e => { if(e.key==="Enter") handleLogin(); });
+document.getElementById("inp-modpw").addEventListener("keydown", e => { if(e.key==="Enter") handleLogin(); });
 
 async function handleLogin() {
   const name = document.getElementById("inp-name").value.trim();
@@ -475,28 +461,16 @@ function tplKPI(r) { return `
   </div>
   <div class="hint-text">⚠ ${r.clueText}</div>`; }
 
-function tplMorse(r) {
-  const signalsHTML = r.morseSignals
-    ? r.morseSignals.map(s => `
-        <div class="morse-signal-block">
-          <div class="puzzle-sublabel">${s.label}</div>
-          <div class="morse-display">${s.code}</div>
-        </div>`).join("")
-    : `<div class="puzzle-sublabel">${r.morseLabel}</div>
-       <div class="morse-display">${r.morseDisplay}</div>`;
-
-  return `
-    <div class="puzzle-sublabel">${r.morseLabel}</div>
-    ${signalsHTML}
-    <div class="morse-ref" style="margin-top:16px;">
-      A·— B—··· C—·—· D—·· E· F··—·<br>
-      G——· H···· I·· J·——— K—·— L·—··<br>
-      M—— N—· O——— P·——· R·—· S··· T—<br>
-      U··— V···— W·—— X—··— Y—·—— Z——··
-    </div>
-    <div class="hint-text" style="margin-top:12px;">
-      ⚠ Space between symbols = same letter. Double space = new word. The digit is in exactly one signal.
-    </div>`; }
+function tplMorse(r) { return `
+  <div class="puzzle-sublabel">${r.morseLabel}</div>
+  <div class="morse-display">${r.morseDisplay}</div>
+  <div class="morse-ref">
+    A·— B—··· C—·—· D—·· E· F··—·<br>
+    G——· H···· I·· J·——— K—·— L·—··<br>
+    M—— N—· O——— P·——· R·—· S··· T—<br>
+    U··— V···— W·—— Y—·—— Z——··
+  </div>
+  <div class="hint-text" style="margin-top:12px;">⚠ Spaces separate letters. Decode the word — it's a number spelled out.</div>`; }
 
 function tplEmoji(r) { return `
   <div class="puzzle-sublabel">INSIDER STATUS UPDATE (ENCRYPTED):</div>
@@ -1324,18 +1298,6 @@ body::before{
   text-shadow:0 0 10px rgba(0,229,255,.45);margin-bottom:14px;
 }
 .morse-ref{font-size:11px;color:var(--g-dim);letter-spacing:.05em;line-height:2;}
-.morse-signal-block {
-  border: 1px solid var(--g-border);
-  padding: 14px;
-  margin-bottom: 12px;
-  background: rgba(0,229,255,0.02);
-}
-.morse-signal-block .morse-display {
-  font-size: clamp(13px,2vw,20px);
-  letter-spacing: 0.25em;
-  word-break: break-all;
-  line-height: 2.2;
-}
 
 /* Emoji */
 .emoji-cipher{font-size:clamp(28px,6vw,48px);letter-spacing:.4em;margin-bottom:14px;line-height:1.6;}
