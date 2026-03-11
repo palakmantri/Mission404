@@ -172,20 +172,18 @@ const ROUNDS = [
   name: "THE FINAL BREACH",
   tag: "⚡ FINAL SEQUENCE",
   timer: 180,
-  desc: "All digits collected. Read the positional rules below carefully — the order is NOT what you expect. Assemble the master access code using hyphens between each part.",
+  desc: "All digits collected. The master code is locked behind an ancient sequencing cipher. Decode the rule below and assemble the code using hyphens between each part.",
   render: "final",
   collected: ["8", "347", "7", "4", "14"],
   rules: [
-    "POSITION 1 — The three-digit number",
-    "POSITION 2 — The largest single-digit number",
-    "POSITION 3 — The two-digit number",
-    "POSITION 4 — The middle single-digit number",
-    "POSITION 5 — The smallest single-digit number"
+    "Darkness favours balance.",
+    "Those who bow to two go first - smallest to largest.",
+    "The lone wolves follow - weakest before strongest."
   ],
-  hint: "Singles are 4, 7, 8. Largest=8, Middle=7, Smallest=4. Three-digit=347. Two-digit=14. Order: 347-8-14-7-4",
-  answer: "347-8-14-7-4",
-  digitLabel: "CODE: 347-8-14-7-4",
-  solution: "Position rules: three-digit(347) → largest single(8) → two-digit(14) → middle single(7) → smallest single(4) → Final code: 347-8-14-7-4"
+  hint: "'Bow to two' = divisible by 2. 'Lone wolves' = odd numbers. Evens ascending then odds ascending,
+  answer: "4-8-14-7-347",
+  digitLabel: "CODE: 4-8-14-7-347",
+  solution: "Even numbers (bow to two) ascending: 4, 8, 14 → Odd numbers (lone wolves) ascending: 7, 347 → Final code: 4-8-14-7-347"
 },
 ];
 
